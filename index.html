@@ -2,82 +2,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Family Music</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;background:#10131a;color:#f5f5f7;
-  font-family:Arial,sans-serif
-}
-header{
-  padding:22px 5%;display:flex;justify-content:space-between;
-  align-items:center;border-bottom:1px solid #292e3a
-}
-.logo{font-size:24px;font-weight:bold;color:#a895ff}
-main{max-width:1000px;margin:30px auto;padding:0 18px}
-h1{font-size:28px;margin-bottom:8px}
-.muted{color:#9ba3b5}
-.search{display:flex;gap:10px;margin:24px 0}
-input,button{
-  padding:12px;border-radius:10px;border:1px solid #343b4b;
-  background:#1a202b;color:white
-}
-input{flex:1;min-width:0}
-button{cursor:pointer}
-button:hover{background:#34304c}
-.primary{background:#785cff;border:0}
-.song{
-  display:flex;align-items:center;gap:14px;padding:14px;
-  border-bottom:1px solid #252b36;cursor:pointer
-}
-.song:hover,.song.active{background:#222238}
-.number{color:#8c95a8;width:35px;flex-shrink:0}
-.songname{flex:1;overflow-wrap:anywhere}
-.songname small{
-  display:block;color:#9ba3b5;margin-top:4px
-}
-.player{
-  position:fixed;bottom:0;left:0;right:0;
-  background:#171c26;border-top:1px solid #343b4b;
-  padding:15px 5%;display:flex;align-items:center;gap:14px
-}
-.now{flex:1;min-width:0}
-.now div{
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
-}
-audio{width:45%;max-width:500px}
-.status{margin:15px 0;color:#9ba3b5}
-@media(max-width:650px){
-  header{padding:18px}
-  header .muted{font-size:12px}
-  .player{flex-wrap:wrap}
-  .now{width:100%;flex:auto}
-  audio{width:100%;max-width:none}
-  .search{flex-wrap:wrap}
-}
-</style>
+  <title>Family Music</title>
+
+  <!-- PWA settings -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#10131a">
+  <meta name="description" content="Family Gurbani and Shabad music library">
+  <link rel="icon" type="image/png" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #10131a;
+      color: #f5f5f7;
+      font-family: Arial, sans-serif;
+      padding-bottom: 115px;
+    }
+
+    header {
+      padding: 22px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #292e3a;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #a895ff;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 18px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .muted {
+      color: #9ba3b5;
+    }
+
+    .search {
+      display: flex;
+      gap: 10px;
+      margin: 24px 0;
+    }
+
+    input, button {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #343b4b;
+      background: #1a202b;
+      color: white;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #34304c;
+    }
+
+    .primary {
+      background: #785cff;
+      border: 0;
+    }
+
+    .song {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px;
+      border-bottom: 1px solid #252b36;
+      cursor: pointer;
+    }
+
+    .song:hover, .song.active {
+      background: #222238;
+    }
+
+    .number {
+      color: #8c95a8;
+      width: 35px;
+      flex-shrink: 0;
+    }
+
+    .songname {
+      flex: 1;
+      overflow-wrap: anywhere;
+    }
+
+    .play-icon {
+      color: #a895ff;
+      font-size: 18px;
+    }
+
+    .player {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #171c26;
+      border-top: 1px solid #343b4b;
+      padding: 15px 5%;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      z-index: 10;
+    }
+
+    .now {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .now div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    audio {
+      width: 45%;
+      max-width: 500px;
+    }
+
+    .status {
+      color: #a895ff;
+      margin: 10px 0;
+    }
+
+    @media(max-width: 650px) {
+      header {
+        padding: 18px;
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      main {
+        margin: 22px auto;
+      }
+
+      .search {
+        flex-wrap: wrap;
+      }
+
+      .search input {
+        width: 100%;
+        flex: 1 1 100%;
+      }
+
+      .player {
+        flex-wrap: wrap;
+        padding: 10px 14px;
+        gap: 8px;
+      }
+
+      .now {
+        width: 100%;
+        flex: 1 1 100%;
+      }
+
+      .player button {
+        padding: 10px;
+      }
+
+      audio {
+        width: 100%;
+        max-width: none;
+      }
+
+      body {
+        padding-bottom: 175px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
   <div class="logo">♫ Family Music</div>
-  <span class="muted">Private family library</span>
+  <span class="muted">Family Gurbani Library</span>
 </header>
 
 <main>
   <h1>Your Music</h1>
-  <p class="muted">A shared place for your family's favourite Gurbani and Shabad.</p>
+
+  <p class="muted">
+    A shared place for your family's favourite Gurbani and Shabad.
+  </p>
 
   <div class="search">
-    <input id="search" type="search" placeholder="Search Gurbani or Shabad...">
+    <input
+      id="search"
+      type="search"
+      placeholder="Search Gurbani or Shabad..."
+      oninput="renderSongs()"
+    >
+
     <button onclick="loadSongs()">↻ Refresh</button>
   </div>
 
-  <p class="status" id="status">Connecting to your music library...</p>
+  <p class="muted" id="count">Loading your music library...</p>
+  <p class="status" id="status"></p>
+
   <div id="list"></div>
 </main>
 
@@ -87,209 +238,202 @@ audio{width:45%;max-width:500px}
     <small class="muted">Family Music</small>
   </div>
 
-  <button onclick="previous()">⏮</button>
-  <button class="primary" onclick="toggle()">▶ / ⏸</button>
-  <button onclick="next()">⏭</button>
+  <button onclick="previousSong()" title="Previous">⏮</button>
+  <button class="primary" onclick="togglePlay()" title="Play or pause">▶ / ⏸</button>
+  <button onclick="nextSong()" title="Next">⏭</button>
 
-  <audio id="audio" controls preload="metadata"></audio>
+  <audio id="audio" controls preload="none"></audio>
 </div>
 
 <script>
-const API = "https://family-music-api.sharanpreetsinghbains.workers.dev";
+  // Cloudflare API URL
+  const API_BASE =
+    "https://family-music-api.sharanpreetsinghbains.workers.dev";
 
-const SONGS_API = API + "/api/songs";
+  const SONGS_ENDPOINT = `${API_BASE}/api/songs`;
 
-let songs = [];
-let current = -1;
+  let songs = [];
+  let currentIndex = -1;
 
-const audio = document.getElementById("audio");
-const list = document.getElementById("list");
-const status = document.getElementById("status");
-const search = document.getElementById("search");
+  const audio = document.getElementById("audio");
+  const list = document.getElementById("list");
+  const count = document.getElementById("count");
+  const status = document.getElementById("status");
+  const currentTitle = document.getElementById("current");
 
-// Load songs from the Cloudflare API
-async function loadSongs() {
-  status.textContent = "Loading your music library...";
-  list.innerHTML = "";
+  // Load songs from the Cloudflare API
+  async function loadSongs() {
+    count.textContent = "Loading your music library...";
+    status.textContent = "";
 
-  try {
-    const response = await fetch(SONGS_API);
+    try {
+      const response = await fetch(SONGS_ENDPOINT, {
+        cache: "no-store"
+      });
 
-    if (!response.ok) {
-      throw new Error("API returned status " + response.status);
-    }
-
-    const data = await response.json();
-
-    // Supports either an array or {songs: [...], total: ...}
-    const items = Array.isArray(data)
-      ? data
-      : (data.songs || data.results || []);
-
-    songs = items.map(song => {
-      const key = song.key || song.filename;
-
-      // Use the API-provided URL when available
-      let audioUrl = song.url;
-
-      if (!audioUrl) {
-        audioUrl = API + "/api/audio?key=" + encodeURIComponent(key);
-      } else if (audioUrl.startsWith("/")) {
-        audioUrl = API + audioUrl;
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
       }
 
-      return {
-        name: song.name || song.filename || key,
-        filename: song.filename || key,
-        key: key,
-        url: audioUrl,
-        size: song.size || 0
-      };
-    });
+      const data = await response.json();
 
-    // Keep the API's ordering
-    render();
+      // API response contains a songs array
+      songs = Array.isArray(data)
+        ? data
+        : (data.songs || []);
 
-    status.textContent =
-      songs.length + " songs loaded from your family music library";
+      renderSongs();
 
-  } catch (error) {
-    console.error(error);
+      count.textContent =
+        `${songs.length} songs loaded from your family music library`;
 
-    status.textContent =
-      "Could not load songs. Check the API or CORS settings.";
+      if (songs.length === 0) {
+        status.textContent = "No songs found in your library.";
+      }
+    } catch (error) {
+      console.error("Unable to load songs:", error);
 
-    list.innerHTML = `
-      <p class="muted">
-        ${escapeHTML(error.message)}
-      </p>
-      <button onclick="loadSongs()">Try Again</button>
-    `;
+      count.textContent = "Unable to load your music library.";
+
+      status.textContent =
+        "Please check your internet connection or API settings.";
+
+      list.innerHTML = "";
+    }
   }
-}
 
-// Safely display text
-function escapeHTML(text) {
-  return String(text).replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  }[char]));
-}
+  // Display songs and search results
+  function renderSongs() {
+    const query = document
+      .getElementById("search")
+      .value
+      .toLowerCase()
+      .trim();
 
-// Display playlist
-function render() {
-  const query = search.value.toLowerCase().trim();
-  list.innerHTML = "";
+    list.innerHTML = "";
 
-  const filtered = songs
-    .map((song, index) => ({song, index}))
-    .filter(item =>
-      item.song.name.toLowerCase().includes(query) ||
-      item.song.filename.toLowerCase().includes(query)
+    const filteredSongs = songs.filter(song =>
+      (song.name || song.filename || "")
+        .toLowerCase()
+        .includes(query)
     );
 
-  status.textContent =
-    filtered.length + " of " + songs.length + " songs";
+    filteredSongs.forEach(song => {
+      const index = songs.indexOf(song);
 
-  if (!filtered.length) {
-    list.innerHTML =
-      '<p class="muted">No songs found.</p>';
-    return;
+      const row = document.createElement("div");
+
+      row.className =
+        "song" + (index === currentIndex ? " active" : "");
+
+      const number = document.createElement("span");
+      number.className = "number";
+      number.textContent = String(index + 1).padStart(3, "0");
+
+      const name = document.createElement("span");
+      name.className = "songname";
+      name.textContent = song.name || song.filename || "Unknown song";
+
+      const play = document.createElement("span");
+      play.className = "play-icon";
+      play.textContent = index === currentIndex && !audio.paused
+        ? "♫"
+        : "▶";
+
+      row.append(number, name, play);
+
+      row.onclick = () => playSong(index);
+
+      list.appendChild(row);
+    });
+
+    if (filteredSongs.length === 0 && songs.length > 0) {
+      list.innerHTML =
+        '<p class="muted">No matching songs found.</p>';
+    }
   }
 
-  filtered.forEach(({song, index}) => {
-    const row = document.createElement("div");
-    row.className = "song" + (index === current ? " active" : "");
+  // Play a selected song from the API
+  function playSong(index) {
+    if (index < 0 || index >= songs.length) return;
 
-    const number = document.createElement("span");
-    number.className = "number";
-    number.textContent = String(index + 1).padStart(3, "0");
+    const song = songs[index];
 
-    const name = document.createElement("span");
-    name.className = "songname";
-    name.textContent = song.name;
+    if (!song.url) {
+      status.textContent = "Song URL is missing from the API.";
+      return;
+    }
 
-    const play = document.createElement("span");
-    play.textContent = index === current && !audio.paused
-      ? "⏸"
-      : "▶";
+    currentIndex = index;
 
-    row.append(number, name, play);
-    row.onclick = () => playSong(index);
+    // API returns a relative audio URL
+    audio.src = new URL(song.url, API_BASE).href;
 
-    list.appendChild(row);
-  });
-}
+    currentTitle.textContent =
+      song.name || song.filename || "Playing song";
 
-// Play selected song
-function playSong(index) {
-  if (index < 0 || index >= songs.length) return;
+    status.textContent = "";
 
-  current = index;
+    audio.play()
+      .then(() => renderSongs())
+      .catch(error => {
+        console.error("Playback error:", error);
+        status.textContent =
+          "Unable to play this song. Please try again.";
+      });
 
-  audio.src = songs[index].url;
-
-  document.getElementById("current").textContent =
-    songs[index].name;
-
-  audio.play().catch(error => {
-    console.error("Playback error:", error);
-    status.textContent =
-      "Unable to play this song. Check the audio API.";
-  });
-
-  render();
-}
-
-// Play or pause
-function toggle() {
-  if (!songs.length) return;
-
-  if (current === -1) {
-    playSong(0);
-    return;
+    renderSongs();
   }
 
-  if (audio.paused) {
-    audio.play();
-  } else {
-    audio.pause();
+  function togglePlay() {
+    if (currentIndex === -1) {
+      if (songs.length > 0) playSong(0);
+      return;
+    }
+
+    if (audio.paused) {
+      audio.play()
+        .then(() => renderSongs())
+        .catch(error => console.error(error));
+    } else {
+      audio.pause();
+    }
   }
-}
 
-// Next song
-function next() {
-  if (!songs.length) return;
+  function nextSong() {
+    if (songs.length === 0) return;
 
-  playSong((current + 1) % songs.length);
-}
-
-// Previous song
-function previous() {
-  if (!songs.length) return;
-
-  if (audio.currentTime > 3) {
-    audio.currentTime = 0;
-  } else {
-    playSong((current - 1 + songs.length) % songs.length);
+    const next = (currentIndex + 1) % songs.length;
+    playSong(next);
   }
-}
 
-// Automatically play next song
-audio.addEventListener("ended", next);
+  function previousSong() {
+    if (songs.length === 0) return;
 
-// Update playlist when playback changes
-audio.addEventListener("play", render);
-audio.addEventListener("pause", render);
+    const previous =
+      (currentIndex - 1 + songs.length) % songs.length;
 
-// Search
-search.addEventListener("input", render);
+    playSong(previous);
+  }
 
-// Load music on page open
-loadSongs();
+  audio.addEventListener("ended", nextSong);
+  audio.addEventListener("play", renderSongs);
+  audio.addEventListener("pause", renderSongs);
+
+  // Register PWA service worker
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("/service-worker.js")
+        .then(() => console.log("Family Music PWA ready"))
+        .catch(error =>
+          console.error("Service Worker error:", error)
+        );
+    });
+  }
+
+  // Initial API request
+  loadSongs();
 </script>
 
 </body>
