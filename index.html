@@ -5,33 +5,183 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Family Music</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#10131a;color:#f5f5f7;font-family:Arial,sans-serif}
-header{padding:22px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #292e3a}
-.logo{font-size:24px;font-weight:bold;color:#a895ff}
-main{max-width:1000px;margin:30px auto;padding:0 18px}
-h1{font-size:28px;margin-bottom:8px}
-.muted{color:#9ba3b5}
-.search{display:flex;gap:10px;margin:24px 0}
-input,button{padding:12px;border-radius:10px;border:1px solid #343b4b;background:#1a202b;color:white}
-input{flex:1;min-width:0}
-button{cursor:pointer}
-button:hover{background:#34304c}
-.primary{background:#785cff;border:0}
-.song{display:flex;align-items:center;gap:14px;padding:14px;border-bottom:1px solid #252b36;cursor:pointer}
-.song:hover,.song.active{background:#222238}
-.number{color:#8c95a8;width:35px}
-.songname{flex:1;overflow-wrap:anywhere}
-.songname small{display:block;color:#9ba3b5;margin-top:4px}
-.player{position:fixed;bottom:0;left:0;right:0;background:#171c26;border-top:1px solid #343b4b;padding:15px 5%;display:flex;align-items:center;gap:14px}
-.now{flex:1;min-width:0}
-.now div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-audio{width:45%;max-width:500px}
-@media(max-width:650px){.player{flex-wrap:wrap}.now{width:100%;flex:auto}audio{width:100%;max-width:none}.search{flex-wrap:wrap}}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #10131a;
+  color: #f5f5f7;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  padding: 22px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #292e3a;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #a895ff;
+}
+
+main {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 0 18px 130px;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.muted {
+  color: #9ba3b5;
+}
+
+.search {
+  display: flex;
+  gap: 10px;
+  margin: 24px 0;
+}
+
+input, button {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #343b4b;
+  background: #1a202b;
+  color: white;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  background: #34304c;
+}
+
+.primary {
+  background: #785cff;
+  border: 0;
+}
+
+.song {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-bottom: 1px solid #252b36;
+  cursor: pointer;
+}
+
+.song:hover,
+.song.active {
+  background: #222238;
+}
+
+.number {
+  color: #8c95a8;
+  width: 40px;
+  flex-shrink: 0;
+}
+
+.songname {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #171c26;
+  border-top: 1px solid #343b4b;
+  padding: 15px 5%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+}
+
+.now {
+  flex: 1;
+  min-width: 0;
+}
+
+.now div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+audio {
+  width: 40%;
+  max-width: 400px;
+}
+
+.status {
+  margin: 12px 0;
+  color: #9ba3b5;
+}
+
+@media(max-width: 650px) {
+  header {
+    padding: 18px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  main {
+    margin: 20px auto;
+    padding-bottom: 180px;
+  }
+
+  .search {
+    flex-wrap: wrap;
+  }
+
+  .search input {
+    width: 100%;
+    flex: auto;
+  }
+
+  .player {
+    flex-wrap: wrap;
+    padding: 12px;
+  }
+
+  .now {
+    width: 100%;
+    flex: auto;
+  }
+
+  audio {
+    width: 100%;
+    max-width: none;
+  }
+}
 </style>
 </head>
+
 <body>
+
 <header>
   <div class="logo">♫ Family Music</div>
   <span class="muted">Private family library</span>
@@ -39,15 +189,23 @@ audio{width:45%;max-width:500px}
 
 <main>
   <h1>Your Music</h1>
-  <p class="muted">A shared place for your family's favourite songs.</p>
+
+  <p class="muted">
+    A shared place for your family's favourite Gurbani and Shabad.
+  </p>
 
   <div class="search">
-    <input id="search" placeholder="Search songs..." oninput="render()">
-    <button onclick="document.getElementById('files').click()">＋ Add MP3s</button>
-    <input id="files" type="file" accept="audio/*" multiple hidden onchange="addFiles(event)">
+    <input
+      id="search"
+      type="search"
+      placeholder="Search Gurbani, Shabad..."
+      oninput="render()"
+    >
+    <button onclick="loadSongs()">↻ Refresh</button>
   </div>
 
-  <p class="muted" id="count">Your music library</p>
+  <p class="status" id="count">Loading music library...</p>
+
   <div id="list"></div>
 </main>
 
@@ -56,63 +214,177 @@ audio{width:45%;max-width:500px}
     <div id="current">Choose a song to play</div>
     <small class="muted">Family Music</small>
   </div>
-  <button onclick="previous()">⏮</button>
-  <button class="primary" onclick="toggle()">▶ / ⏸</button>
-  <button onclick="next()">⏭</button>
-  <audio id="audio" controls></audio>
+
+  <button onclick="previous()" title="Previous">⏮</button>
+  <button class="primary" onclick="toggle()" title="Play/Pause">
+    ▶ / ⏸
+  </button>
+  <button onclick="next()" title="Next">⏭</button>
+
+  <audio id="audio" controls preload="none"></audio>
 </div>
 
 <script>
-let songs=[],current=-1;
-const audio=document.getElementById('audio');
+const API =
+  "https://family-music-api.sharanpreetsinghbains.workers.dev";
 
-function addFiles(event){
-  for(const file of event.target.files){
-    songs.push({name:file.name.replace(/\.(mp3|wav|m4a)$/i,''),url:URL.createObjectURL(file)});
+let songs = [];
+let current = -1;
+let loading = false;
+
+const audio = document.getElementById("audio");
+
+async function loadSongs() {
+  if (loading) return;
+
+  loading = true;
+
+  const list = document.getElementById("list");
+  const count = document.getElementById("count");
+
+  count.textContent = "Loading your music library...";
+  list.innerHTML = "";
+
+  try {
+    const response = await fetch(`${API}/api/songs`);
+
+    if (!response.ok) {
+      throw new Error("API returned " + response.status);
+    }
+
+    const data = await response.json();
+
+    const songList = Array.isArray(data)
+      ? data
+      : data.songs || [];
+
+    songs = songList.map(song => {
+      const songUrl = song.url || "";
+
+      return {
+        name: song.name || song.filename || "Unknown song",
+        url: songUrl.startsWith("http")
+          ? songUrl
+          : API + songUrl
+      };
+    });
+
+    render();
+
+  } catch (error) {
+    count.textContent = "Unable to load music.";
+
+    list.innerHTML =
+      "<p class='muted'>Please check your music API deployment.</p>";
+
+    console.error("Music loading error:", error);
+
+  } finally {
+    loading = false;
   }
-  render();
-  event.target.value='';
 }
-function render(){
-  const query=document.getElementById('search').value.toLowerCase();
-  const list=document.getElementById('list');
-  list.innerHTML='';
-  const filtered=songs.filter(s=>s.name.toLowerCase().includes(query));
-  document.getElementById('count').textContent=
-    `${filtered.length} songs · Local preview`;
-  filtered.forEach(song=>{
-    const i=songs.indexOf(song);
-    const row=document.createElement('div');
-    row.className='song'+(i===current?' active':'');
-    const num=document.createElement('span');
-    num.className='number';
-    num.textContent=String(i+1).padStart(3,'0');
-    const name=document.createElement('span');
-    name.className='songname';
-    name.textContent=song.name;
-    const play=document.createElement('span');
-    play.textContent='▶';
-    row.append(num,name,play);
-    row.onclick=()=>playSong(i);
+
+function render() {
+  const query = document
+    .getElementById("search")
+    .value.toLowerCase()
+    .trim();
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  const filtered = songs.filter(song =>
+    song.name.toLowerCase().includes(query)
+  );
+
+  document.getElementById("count").textContent =
+    `${filtered.length} songs · Cloud music library`;
+
+  filtered.forEach(song => {
+    const index = songs.indexOf(song);
+
+    const row = document.createElement("div");
+    row.className =
+      "song" + (index === current ? " active" : "");
+
+    const number = document.createElement("span");
+    number.className = "number";
+    number.textContent =
+      String(index + 1).padStart(3, "0");
+
+    const name = document.createElement("span");
+    name.className = "songname";
+    name.textContent = song.name;
+
+    const play = document.createElement("span");
+    play.textContent = index === current && !audio.paused
+      ? "♫"
+      : "▶";
+
+    row.append(number, name, play);
+    row.onclick = () => playSong(index);
+
     list.appendChild(row);
   });
 }
-function playSong(i){
-  if(i<0||i>=songs.length)return;
-  current=i;
-  audio.src=songs[i].url;
-  document.getElementById('current').textContent=songs[i].name;
-  audio.play();
+
+function playSong(index) {
+  if (index < 0 || index >= songs.length) return;
+
+  current = index;
+
+  audio.src = songs[index].url;
+
+  document.getElementById("current").textContent =
+    songs[index].name;
+
+  audio.play().catch(error => {
+    console.error("Playback error:", error);
+    document.getElementById("current").textContent =
+      "Unable to play: " + songs[index].name;
+  });
+
   render();
 }
-function toggle(){
-  if(!audio.src){if(songs.length)playSong(0);return}
-  if(audio.paused)audio.play();else audio.pause();
+
+function toggle() {
+  if (!audio.src) {
+    if (songs.length > 0) {
+      playSong(0);
+    }
+    return;
+  }
+
+  if (audio.paused) {
+    audio.play().catch(console.error);
+  } else {
+    audio.pause();
+  }
 }
-function next(){if(songs.length)playSong((current+1)%songs.length)}
-function previous(){if(songs.length)playSong((current-1+songs.length)%songs.length)}
-audio.addEventListener('ended',next);
-render();
+
+function next() {
+  if (songs.length === 0) return;
+
+  playSong((current + 1) % songs.length);
+}
+
+function previous() {
+  if (songs.length === 0) return;
+
+  if (current <= 0) {
+    playSong(songs.length - 1);
+  } else {
+    playSong(current - 1);
+  }
+}
+
+audio.addEventListener("ended", next);
+
+audio.addEventListener("play", render);
+audio.addEventListener("pause", render);
+
+loadSongs();
 </script>
+
 </body>
 </html>
